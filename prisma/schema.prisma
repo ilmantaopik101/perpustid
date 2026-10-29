@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum StatusPeminjaman {
+  MENUNGGU_VERIFIKASI
+  DISETUJUI
+  DITOLAK
+  DIPINJAM
+  DIKEMBALIKAN
+}
+
+model Anggota {
+  id             Int         @id @default(autoincrement())
+  nama           String      @db.VarChar(100)
+  nomorAnggota   String?     @unique @map("nomor_anggota") @db.VarChar(30)
+  email          String      @unique @db.VarChar(191)
+  password       String      @db.VarChar(255)
+  createdAt      DateTime    @default(now()) @map("created_at")
+  updatedAt      DateTime    @updatedAt @map("updated_at")
+  peminjaman     Peminjaman[]
+
+  @@map("anggota")
+}
+
+model Buku {
+  id             Int         @id @default(autoincrement())
+  isbn           String?     @unique @db.VarChar(20)
+  judul          String      @db.VarChar(200)
+  penulis        String      @db.VarChar(150)
+  penerbit       String?     @db.VarChar(150)
+  tahunTerbit    Int?
+  stok           Int         @default(0)
+  createdAt      DateTime    @default(now()) @map("created_at")
+  updatedAt      DateTime    @updatedAt @map("updated_at")
+  peminjaman     Peminjaman[]
+
+  @@map("buku")
+}
+
+model Peminjaman {
+  id             Int               @id @default(autoincrement())
+  anggotaId      Int               @map("anggota_id")
+  bukuId         Int               @map("buku_id")
+  tanggalAjukan  DateTime          @default(now()) @map("tanggal_ajukan")
+  tanggalPinjam  DateTime?         @map("tanggal_pinjam")
+  tanggalJatuhTempo DateTime?      @map("tanggal_jatuh_tempo")
+  tanggalKembali DateTime?         @map("tanggal_kembali")
+  status         StatusPeminjaman  @default(MENUNGGU_VERIFIKASI)
+  catatanPetugas String?           @db.VarChar(500) @map("catatan_petugas")
+  anggota        Anggota           @relation(fields: [anggotaId], references: [id])
+  buku           Buku              @relation(fields: [bukuId], references: [id])
+
+  @@index([anggotaId])
+  @@index([bukuId])
+  @@index([status])
+  @@map("peminjaman")
+}

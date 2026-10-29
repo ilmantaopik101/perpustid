@@ -11,24 +11,47 @@ export default function RegisterPage() {
   const [konfirmasiPassword, setKonfirmasiPassword] = useState("");
   const [pesanError, setPesanError] = useState("");
 
-  function handleRegister(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setPesanError("");
+  async function handleRegister(event: React.FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+  setPesanError("");
 
-    if (password.length < 8) {
-      setPesanError("Kata sandi harus terdiri dari minimal 8 karakter.");
+  if (password.length < 8) {
+    setPesanError("Kata sandi harus terdiri dari minimal 8 karakter.");
+    return;
+  }
+
+  if (password !== konfirmasiPassword) {
+    setPesanError("Konfirmasi kata sandi tidak cocok.");
+    return;
+  }
+
+  try {
+    const response = await fetch("/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nama,
+        email,
+        password,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      setPesanError(result.message || "Registrasi gagal.");
       return;
     }
 
-    if (password !== konfirmasiPassword) {
-      setPesanError("Konfirmasi kata sandi tidak cocok.");
-      return;
-    }
-
-    alert(
-      "Validasi form berhasil! Fitur penyimpanan akun ke database akan dibuat pada tahap berikutnya."
+    window.location.href = "/login";
+  } catch {
+    setPesanError(
+      "Tidak dapat terhubung ke server. Silakan coba kembali."
     );
   }
+}
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-slate-50 px-5 py-10">
