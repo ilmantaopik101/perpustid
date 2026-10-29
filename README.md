@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Perpustid
 
-## Getting Started
+**Perpustid** adalah sistem informasi perpustakaan berbasis web yang dirancang untuk membantu pengelolaan katalog buku dan proses peminjaman buku dengan dukungan QR Code.
 
-First, run the development server:
+## Deskripsi Proyek
+
+Perpustid dikembangkan untuk mempermudah anggota perpustakaan dalam mengakses informasi buku dan mengajukan peminjaman. Sistem juga menyediakan fitur bagi petugas perpustakaan untuk memverifikasi permintaan peminjaman dan mengelola proses pengembalian buku.
+
+Penggunaan QR Code pada kartu anggota direncanakan untuk membantu proses identifikasi anggota saat mengakses layanan perpustakaan.
+
+## Tujuan
+
+- Mempermudah anggota mencari informasi buku.
+- Menyediakan proses pengajuan peminjaman buku secara online.
+- Membantu petugas memverifikasi permintaan peminjaman.
+- Mempermudah pencatatan peminjaman dan pengembalian buku.
+- Mengurangi ketergantungan pada pencatatan manual.
+
+## Teknologi yang Digunakan
+
+| Teknologi | Kegunaan |
+|---|---|
+| Next.js 14 | Framework aplikasi web |
+| React | Membangun antarmuka pengguna |
+| TypeScript | Menambahkan pemeriksaan tipe pada JavaScript |
+| Tailwind CSS | Mengatur tampilan dan desain |
+| MySQL | Menyimpan data aplikasi |
+| Prisma ORM | Menghubungkan aplikasi dengan database |
+| Git | Mengelola versi kode |
+| GitHub | Menyimpan repositori dan dokumentasi proyek |
+
+*Catatan: Teknologi database dan ORM akan dikonfigurasi pada tahap pengembangan berikutnya.*
+
+## Fitur yang Direncanakan
+
+1. Registrasi dan login anggota.
+2. Identifikasi anggota menggunakan QR Code.
+3. Dashboard anggota.
+4. Katalog dan pencarian buku.
+5. Pengajuan peminjaman buku.
+6. Verifikasi peminjaman oleh petugas.
+7. Pencatatan pengembalian buku.
+8. Dashboard petugas.
+9. Pengelolaan data buku dan anggota.
+10. Riwayat peminjaman anggota.
+
+## Persyaratan Pengembangan
+
+Pastikan perangkat telah memiliki:
+
+- Node.js dan npm.
+- Git.
+- MySQL melalui Laragon atau instalasi MySQL lainnya.
+- Visual Studio Code atau editor kode sejenis.
+
+## Menjalankan Proyek
+
+Instal dependensi:
+
+```bash
+npm install
+```
+
+Jalankan server pengembangan:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka alamat berikut di browser:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Struktur Proyek
 
-## Learn More
+Struktur utama proyek saat ini:
 
-To learn more about Next.js, take a look at the following resources:
+```text
+perpustid/
+├── public/
+├── src/
+│   └── app/
+│       ├── fonts/
+│       ├── globals.css
+│       ├── layout.tsx
+│       └── page.tsx
+├── package.json
+├── tsconfig.json
+├── README.md
+└── ...
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Struktur dapat berkembang seiring penambahan fitur.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Status Pengembangan
 
-## Deploy on Vercel
+**Tahap saat ini:** Persiapan proyek dan dokumentasi awal.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Fitur aplikasi, konfigurasi database, autentikasi, dan integrasi QR Code akan dikembangkan secara bertahap.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Lisensi
+
+Lisensi proyek belum ditentukan.
