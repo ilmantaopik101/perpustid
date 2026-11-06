@@ -1,23 +1,57 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function LoginPage() {
+  const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [pesanError, setPesanError] = useState("");
+  const [sedangLogin, setSedangLogin] = useState(false);
 
-  function handleLogin(event: React.FormEvent<HTMLFormElement>) {
+  async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    alert(
-      "Tampilan login berhasil digunakan. Autentikasi database akan dibuat pada tahap berikutnya."
-    );
+    setPesanError("");
+    setSedangLogin(true);
+
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setPesanError(result.message || "Login gagal.");
+        return;
+      }
+
+      router.replace("/dashboard");
+      router.refresh();
+    } catch {
+      setPesanError(
+        "Tidak dapat terhubung ke server. Silakan coba kembali."
+      );
+    } finally {
+      setSedangLogin(false);
+    }
   }
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-slate-50 px-5 py-10">
       <div className="grid w-full max-w-5xl overflow-hidden rounded-3xl bg-white shadow-xl md:grid-cols-2">
+        {/* Panel kiri */}
         <section className="relative hidden flex-col justify-between overflow-hidden bg-indigo-600 p-10 text-white md:flex">
           <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-indigo-400/40 blur-3xl" />
 
@@ -25,6 +59,7 @@ export default function LoginPage() {
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-xl font-bold text-indigo-600">
               P
             </div>
+
             <span className="text-xl font-bold">Perpustid</span>
           </Link>
 
@@ -52,6 +87,7 @@ export default function LoginPage() {
           </p>
         </section>
 
+        {/* Panel kanan: formulir login */}
         <section className="p-7 sm:p-10 md:p-12">
           <Link
             href="/"
@@ -115,11 +151,21 @@ export default function LoginPage() {
               />
             </div>
 
+            {pesanError && (
+              <p
+                role="alert"
+                className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600"
+              >
+                {pesanError}
+              </p>
+            )}
+
             <button
               type="submit"
-              className="w-full rounded-xl bg-indigo-600 px-5 py-3.5 font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500/20"
+              disabled={sedangLogin}
+              className="w-full rounded-xl bg-indigo-600 px-5 py-3.5 font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500/20 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              Masuk
+              {sedangLogin ? "Memeriksa akun..." : "Masuk"}
             </button>
           </form>
 
